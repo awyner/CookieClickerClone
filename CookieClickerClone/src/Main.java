@@ -1,9 +1,5 @@
 import java.awt.Color;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.swing.JFrame;
-import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 public class Main {

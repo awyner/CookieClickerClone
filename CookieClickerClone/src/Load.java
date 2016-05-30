@@ -26,6 +26,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 	boolean clicked = false;
 	boolean b1 = false, b2 = false, b3 = false, b4 = false, b5 = false, b6 = false, b7 = false, b8 = false;
 	boolean muted = false;
+	boolean debug = false;
 	private static final long serialVersionUID = 5509155261502497671L;
 	private BufferedImage image;
 	private BufferedImage imageDark;
@@ -38,6 +39,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 	private static byte data7[];
 	private static byte data8[];
 	private static byte data9[];
+	private static byte data10[];
 	private static AudioFormat form;
 	private Clip c;
 
@@ -51,10 +53,12 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 			AudioInputStream feather;
 			AudioInputStream star;
 			AudioInputStream luigi;
-			AudioInputStream toad; //divide bufferlength by 6
+			AudioInputStream toad; 
 			AudioInputStream yoshi;
 			AudioInputStream peach;
 			AudioInputStream main;
+			AudioInputStream debug;
+
 			try {
 				redMush = AudioSystem.getAudioInputStream(Load.class.getResource("/RedMushroomSound.wav"));
 				byte[] bytes = new byte[redMush.available()];
@@ -109,6 +113,12 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 				main.read(bytes9);
 				data9 = bytes9;
 				form = main.getFormat();
+
+				debug = AudioSystem.getAudioInputStream(Load.class.getResource("/OneUpSound.wav"));
+				byte[] bytes10 = new byte[debug.available()];
+				debug.read(bytes10);
+				data10 = bytes10;
+				form = debug.getFormat();
 			} catch (UnsupportedAudioFileException e) {
 				e.printStackTrace();
 			}
@@ -151,15 +161,16 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		System.out.println(e.getX());
-		System.out.println(e.getY());
+		//System.out.println(e.getX());
+		//System.out.println(e.getY());
 		//Click registration for upgrade boxes
 		clicked = false;
 		if(e.getX() > x && e.getX() < 1000 && e.getY() > y1 && e.getY() < y1+50){
-			if(count>=40)
+			if(count>=40 || debug)
 			{
 				clickMulti+=50;
-				count-=40;
+				if(!debug)
+					count-=40;
 				if(!muted){
 					try {
 						c = AudioSystem.getClip();
@@ -176,126 +187,132 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 					}
 				}
 			}
-			if(e.getX() > x && e.getX() < 1000 && e.getY() > y2 && e.getY() < y2+50){
-				if(count>=10000)
-				{
-					clickMulti+=500;
+		}
+		if(e.getX() > x && e.getX() < 1000 && e.getY() > y2 && e.getY() < y2+50){
+			if(count>=10000 || debug){
+				clickMulti+=500;
+				if(!debug)
 					count-=10000;
-					if(!muted){
-						try {
-							c = AudioSystem.getClip();
-						} catch (LineUnavailableException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						try {
-							c.open(form, data2, 0, data2.length);
-							c.start();
-						} catch (LineUnavailableException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+				if(!muted){
+					try {
+						c = AudioSystem.getClip();
+					} catch (LineUnavailableException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
-				}
-			}
-
-			if(e.getX() > x && e.getX() < 1000 && e.getY() > y3 && e.getY() < y3+50){
-				if(count>=100000)
-				{
-					clickMulti+=5000;
-					count-=100000;
-					if(!muted){
-						try {
-							c = AudioSystem.getClip();
-						} catch (LineUnavailableException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						try {
-							c.open(form, data3, 0, data3.length);
-							c.start();
-						} catch (LineUnavailableException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-				}
-			}
-
-			if(e.getX() > x && e.getX() < 1000 && e.getY() > y4 && e.getY() < y4+50){
-				if(count>=1000000)
-				{
-					clickMulti+=50000;
-					count-=1000000;
-					if(!muted){
-						try {
-							c = AudioSystem.getClip();
-						} catch (LineUnavailableException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						try {
-							c.open(form, data4, 0, data4.length);
-							c.start();
-						} catch (LineUnavailableException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-				}
-			}
-
-			if(e.getX() > x && e.getX() < 1000 && e.getY() > y5 && e.getY() < y5+50){
-				if(count>=500000)
-				{
-					clickPass+=50;
-					count-=500000;
-					if(!muted){
-						try {
-							c = AudioSystem.getClip();
-						} catch (LineUnavailableException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						try {
-							c.open(form, data5, 0, data5.length);
-							c.start();
-						} catch (LineUnavailableException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-				}
-			}
-
-			if(e.getX() > x && e.getX() < 1000 && e.getY() > y6 && e.getY() < y6+50){
-				if(count>=5000000)
-				{
-					clickPass+=500;
-					count-=5000000;
-					if(!muted){
-						try {
-							c = AudioSystem.getClip();
-						} catch (LineUnavailableException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						try {
-							c.open(form, data6, 0, data6.length/6);
-							c.start();
-						} catch (LineUnavailableException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+					try {
+						c.open(form, data2, 0, data2.length);
+						c.start();
+					} catch (LineUnavailableException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
 				}
 			}
 		}
+
+		if(e.getX() > x && e.getX() < 1000 && e.getY() > y3 && e.getY() < y3+50){
+			if(count>=100000 || debug)
+			{
+				clickMulti+=5000;
+				if(!debug)
+					count-=100000;
+				if(!muted){
+					try {
+						c = AudioSystem.getClip();
+					} catch (LineUnavailableException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						c.open(form, data3, 0, data3.length);
+						c.start();
+					} catch (LineUnavailableException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		}
+
+		if(e.getX() > x && e.getX() < 1000 && e.getY() > y4 && e.getY() < y4+50){
+			if(count>=1000000 || debug)
+			{
+				clickMulti+=50000;
+				if(!debug)
+					count-=1000000;
+				if(!muted){
+					try {
+						c = AudioSystem.getClip();
+					} catch (LineUnavailableException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						c.open(form, data4, 0, data4.length);
+						c.start();
+					} catch (LineUnavailableException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		}
+
+		if(e.getX() > x && e.getX() < 1000 && e.getY() > y5 && e.getY() < y5+50){
+			if(count>=500000 || debug)
+			{
+				clickPass+=50;
+				if(!debug)
+					count-=500000;
+				if(!muted){
+					try {
+						c = AudioSystem.getClip();
+					} catch (LineUnavailableException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						c.open(form, data5, 0, data5.length);
+						c.start();
+					} catch (LineUnavailableException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		}
+
+		if(e.getX() > x && e.getX() < 1000 && e.getY() > y6 && e.getY() < y6+50){
+			if(count>=5000000 || debug)
+			{
+				clickPass+=500;
+				if(!debug)
+					count-=5000000;
+				if(!muted){
+					try {
+						c = AudioSystem.getClip();
+					} catch (LineUnavailableException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						c.open(form, data6, 0, data6.length/6);
+						c.start();
+					} catch (LineUnavailableException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		}
+
 		if(e.getX() > x && e.getX() < 1000 && e.getY() > y7 && e.getY() < y7+50){
-			if(count>=50000000)
+			if(count>=50000000 || debug)
 			{
 				clickPass+=5000;
-				count-=50000000;
+				if(!debug)
+					count-=50000000;
 				if(!muted){
 					try {
 						c = AudioSystem.getClip();
@@ -315,10 +332,11 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		}
 
 		if(e.getX() > x && e.getX() < 1000 && e.getY() > y8 && e.getY() < y8+50){
-			if(count>=500000000)
+			if(count>=500000000 || debug)
 			{
 				clickPass+=50000;
-				count-=500000000;
+				if(!debug)
+					count-=500000000;
 				if(!muted){
 					try {
 						c = AudioSystem.getClip();
@@ -340,7 +358,6 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		//Click registration for center clicker
 		if(e.getX() > 400 && e.getX() < 600 && e.getY() > 250 && e.getY() < 450){
 			count+=clickMulti+1;
-			System.out.println("f");
 			if(!muted){
 				try {
 					c = AudioSystem.getClip();
@@ -380,6 +397,23 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 			System.exit(0);
 		if(e.getKeyCode() == KeyEvent.VK_M)
 			muted = !muted;
+		if(e.getKeyCode() == KeyEvent.VK_D)
+		{
+			debug = !debug;
+			try {
+				c = AudioSystem.getClip();
+			} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				c.open(form, data10, 0, data10.length);
+				c.start();
+			} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 	}
 
 	@Override
