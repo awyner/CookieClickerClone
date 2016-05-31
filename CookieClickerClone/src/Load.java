@@ -46,8 +46,8 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 	public Load() {
 		addMouseListener(this);
 		try{
-			image = ImageIO.read(Load.class.getResource("/marios2.png"));
-			imageDark = ImageIO.read(Load.class.getResource("/mariopicture copy.png"));
+			image = ImageIO.read(Load.class.getResource("/mario.png"));
+			imageDark = ImageIO.read(Load.class.getResource("/mariojump.png"));
 			AudioInputStream redMush;
 			AudioInputStream fire;
 			AudioInputStream feather;
@@ -152,13 +152,31 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		g.drawString("Yoshi +5,000 (50,000,000)", x+5, 420);
 		g.drawString("Princess Peach +50,000 (500,000,000)", x+5, 470);
 		if(clicked == false)
-			g.drawImage(image, 400, 250, 150, 200, null);
+			g.drawImage(image, 400, 250, 100, 200, null);
 		if (clicked == true)
-			g.drawImage(imageDark, 400, 250, 150, 200, null);
+			g.drawImage(imageDark, 380, 200, 150, 200, null);
 		g.setColor(new Color(0,0,0,0));
 		g.drawRect(400, 250, 200, 200);
 	}
 
+	public void playMusic(byte[] data){
+		if(!muted){
+			try {
+				c = AudioSystem.getClip();
+			} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				c.open(form, data, 0, data.length);
+				c.start();
+			} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
+	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		//System.out.println(e.getX());
@@ -171,21 +189,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 				clickMulti+=50;
 				if(!debug)
 					count-=40;
-				if(!muted){
-					try {
-						c = AudioSystem.getClip();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						c.open(form, data1, 0, data1.length);
-						c.start();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+				playMusic(data1);
 			}
 		}
 		if(e.getX() > x && e.getX() < 1000 && e.getY() > y2 && e.getY() < y2+50){
@@ -193,21 +197,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 				clickMulti+=500;
 				if(!debug)
 					count-=10000;
-				if(!muted){
-					try {
-						c = AudioSystem.getClip();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						c.open(form, data2, 0, data2.length);
-						c.start();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+				playMusic(data2);
 			}
 		}
 
@@ -217,21 +207,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 				clickMulti+=5000;
 				if(!debug)
 					count-=100000;
-				if(!muted){
-					try {
-						c = AudioSystem.getClip();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						c.open(form, data3, 0, data3.length);
-						c.start();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+				playMusic(data3);
 			}
 		}
 
@@ -241,21 +217,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 				clickMulti+=50000;
 				if(!debug)
 					count-=1000000;
-				if(!muted){
-					try {
-						c = AudioSystem.getClip();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						c.open(form, data4, 0, data4.length);
-						c.start();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+				playMusic(data4);
 			}
 		}
 
@@ -265,21 +227,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 				clickPass+=50;
 				if(!debug)
 					count-=500000;
-				if(!muted){
-					try {
-						c = AudioSystem.getClip();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						c.open(form, data5, 0, data5.length);
-						c.start();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+				playMusic(data5);
 			}
 		}
 
@@ -289,21 +237,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 				clickPass+=500;
 				if(!debug)
 					count-=5000000;
-				if(!muted){
-					try {
-						c = AudioSystem.getClip();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						c.open(form, data6, 0, data6.length/6);
-						c.start();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+				playMusic(data6);
 			}
 		}
 
@@ -313,21 +247,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 				clickPass+=5000;
 				if(!debug)
 					count-=50000000;
-				if(!muted){
-					try {
-						c = AudioSystem.getClip();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						c.open(form, data7, 0, data7.length);
-						c.start();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+				playMusic(data7);
 			}
 		}
 
@@ -337,42 +257,14 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 				clickPass+=50000;
 				if(!debug)
 					count-=500000000;
-				if(!muted){
-					try {
-						c = AudioSystem.getClip();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						c.open(form, data8, 0, data8.length);
-						c.start();
-					} catch (LineUnavailableException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+				playMusic(data8);
 			}
 		}
 
 		//Click registration for center clicker
 		if(e.getX() > 400 && e.getX() < 600 && e.getY() > 250 && e.getY() < 450){
 			count+=clickMulti+1;
-			if(!muted){
-				try {
-					c = AudioSystem.getClip();
-				} catch (LineUnavailableException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				try {
-					c.open(form, data9, 0, data9.length);
-					c.start();
-				} catch (LineUnavailableException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
+			playMusic(data9);
 		}
 	}
 
