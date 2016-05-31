@@ -30,6 +30,8 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 	private static final long serialVersionUID = 5509155261502497671L;
 	private BufferedImage image;
 	private BufferedImage imageDark;
+	private BufferedImage block;
+	private BufferedImage coin;
 	private static byte data1[];
 	private static byte data2[];
 	private static byte data3[];
@@ -48,6 +50,8 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		try{
 			image = ImageIO.read(Load.class.getResource("/mario.png"));
 			imageDark = ImageIO.read(Load.class.getResource("/mariojump.png"));
+			block = ImageIO.read(Load.class.getResource("/coinblock.png"));
+			coin = ImageIO.read(Load.class.getResource("/coin.png"));
 			AudioInputStream redMush;
 			AudioInputStream fire;
 			AudioInputStream feather;
@@ -151,10 +155,14 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		g.drawString("Toad +500 (5,000,000)", x+5, 370);
 		g.drawString("Yoshi +5,000 (50,000,000)", x+5, 420);
 		g.drawString("Princess Peach +50,000 (500,000,000)", x+5, 470);
+		g.drawImage(block, 400, 100, 100, 110, null);
 		if(clicked == false)
 			g.drawImage(image, 400, 250, 100, 200, null);
 		if (clicked == true)
-			g.drawImage(imageDark, 380, 200, 150, 200, null);
+		{
+			g.drawImage(imageDark, 375, 200, 150, 200, null);
+			g.drawImage(coin, 420, 15, 60, 80, null);
+		}
 		g.setColor(new Color(0,0,0,0));
 		g.drawRect(400, 250, 200, 200);
 	}
