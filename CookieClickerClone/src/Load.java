@@ -22,6 +22,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 	int clickMulti = 0;
 	int lastClicked = 0;
 	double count = 0;
+	double starCounter = 0;
 	long clickPass = 0;
 	boolean paused = false;
 	boolean clicked = false;
@@ -38,6 +39,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 	private BufferedImage invinc1;
 	private BufferedImage invinc2;
 	private BufferedImage invinc3;
+	private BufferedImage invinc[] = {invinc1, invinc2, invinc3};
 	private BufferedImage invincJump;
 	private BufferedImage block;
 	private BufferedImage coin;
@@ -173,6 +175,16 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		g.drawString("Yoshi +5,000 (50,000,000)", x+5, 420);
 		g.drawString("Princess Peach +50,000 (500,000,000)", x+5, 470);
 		g.drawImage(block, 400, 100, 100, 110, null);
+		
+		if(lastClicked == 3)
+		{
+		    if(starCounter >= 3)
+		    {
+		        starCounter = 0;
+		    }
+		    g.drawImage(invinc[(int)starCounter], 380, 240, 170, 230, null);
+		    starCounter += 1;
+		}
 
 		//mushroom/default
 		if(clicked == false && lastClicked == 0)
@@ -343,13 +355,6 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		//Counter for passive upgrades, displays 30 times per second
 		if(counter%2==0)
 			count+=clickPass/30.0;
-		if (counter%60 == 0 && (lastClicked == 3 || lastClicked == 4 || lastClicked == 5)) {
-			//Do thing to rotate picture
-			lastClicked = c;
-			c++;
-			if(c==5)
-				c = 3;
-		}
 	}
 
 	public boolean isPaused() {
