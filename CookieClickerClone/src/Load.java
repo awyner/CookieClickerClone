@@ -20,16 +20,25 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 
 	int x=740, y1=100, y2=150, y3=200, y4=250, y5=300, y6=350, y7=400, y8=450, l=260;
 	int clickMulti = 0;
+	int lastClicked = 0;
 	double count = 0;
 	long clickPass = 0;
 	boolean paused = false;
 	boolean clicked = false;
 	boolean b1 = false, b2 = false, b3 = false, b4 = false, b5 = false, b6 = false, b7 = false, b8 = false;
 	boolean muted = false;
-	boolean debug = false;
+	boolean debug = true;
 	private static final long serialVersionUID = 5509155261502497671L;
 	private BufferedImage image;
-	private BufferedImage imageDark;
+	private BufferedImage imageJump;
+	private BufferedImage fire;
+	private BufferedImage fireJump;
+	private BufferedImage feather;
+	private BufferedImage featherJump;
+	private BufferedImage invinc1;
+	private BufferedImage invinc2;
+	private BufferedImage invinc3;
+	private BufferedImage invincJump;
 	private BufferedImage block;
 	private BufferedImage coin;
 	private static byte data1[];
@@ -49,7 +58,15 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		addMouseListener(this);
 		try{
 			image = ImageIO.read(Load.class.getResource("/mario.png"));
-			imageDark = ImageIO.read(Load.class.getResource("/mariojump.png"));
+			imageJump = ImageIO.read(Load.class.getResource("/mariojump.png"));
+			fire = ImageIO.read(Load.class.getResource("/fireflower.PNG"));
+			fireJump = ImageIO.read(Load.class.getResource("/firejump.PNG"));
+			feather = ImageIO.read(Load.class.getResource("/feather.PNG"));
+			featherJump = ImageIO.read(Load.class.getResource("/featherjump.PNG"));
+			invinc1 = ImageIO.read(Load.class.getResource("/invincibilitystar.PNG"));
+			invinc2 = ImageIO.read(Load.class.getResource("/invincibilitystar1.PNG"));
+			invinc3 = ImageIO.read(Load.class.getResource("/invincibilitystar2.PNG"));
+			invincJump = ImageIO.read(Load.class.getResource("/invincibilitystarjump.PNG"));
 			block = ImageIO.read(Load.class.getResource("/coinblock.png"));
 			coin = ImageIO.read(Load.class.getResource("/coin.png"));
 			AudioInputStream redMush;
@@ -156,15 +173,53 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		g.drawString("Yoshi +5,000 (50,000,000)", x+5, 420);
 		g.drawString("Princess Peach +50,000 (500,000,000)", x+5, 470);
 		g.drawImage(block, 400, 100, 100, 110, null);
-		if(clicked == false)
+
+		//mushroom/default
+		if(clicked == false && lastClicked == 0)
 			g.drawImage(image, 400, 250, 100, 200, null);
-		if (clicked == true)
+		if (clicked == true && lastClicked == 0)
 		{
-			g.drawImage(imageDark, 375, 200, 150, 200, null);
+			g.drawImage(imageJump, 375, 200, 150, 200, null);
 			g.drawImage(coin, 420, 15, 60, 80, null);
 		}
-		g.setColor(new Color(0,0,0,0));
-		g.drawRect(400, 250, 200, 200);
+		//fire flower
+		if(clicked == false && lastClicked == 1)
+			g.drawImage(fire, 355, 220, 180, 280, null);
+		if (clicked == true && lastClicked == 1)
+		{
+			g.drawImage(fireJump, 345, 185, 200, 300, null);
+			g.drawImage(coin, 420, 15, 60, 80, null);
+		}
+		//feather
+		if(clicked == false && lastClicked == 2)
+			g.drawImage(feather, 300, 220, 240, 280, null);
+		if (clicked == true && lastClicked == 2)
+		{
+			g.drawImage(featherJump, 370, 190, 150, 225, null);
+			g.drawImage(coin, 420, 15, 60, 80, null);
+		}
+		//invincibility
+		if(clicked == false && lastClicked == 3)
+			g.drawImage(invinc1, 380, 240, 170, 230, null);
+		if (clicked == true && lastClicked == 3)
+		{
+			g.drawImage(invincJump, 390, 197, 140, 320, null);
+			g.drawImage(coin, 420, 15, 60, 80, null);
+		}
+		if(clicked == false && lastClicked == 4)
+			g.drawImage(invinc2, 380, 240, 170, 230, null);
+		if (clicked == true && lastClicked == 4)
+		{
+			g.drawImage(invincJump, 390, 197, 140, 320, null);
+			g.drawImage(coin, 420, 15, 60, 80, null);
+		}
+		if(clicked == false && lastClicked == 5)
+			g.drawImage(invinc1, 380, 240, 170, 230, null);
+		if (clicked == true && lastClicked == 5)
+		{
+			g.drawImage(invincJump, 390, 197, 140, 320, null);
+			g.drawImage(coin, 420, 15, 60, 80, null);
+		}
 	}
 
 	public void playMusic(byte[] data){
@@ -183,7 +238,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 				e1.printStackTrace();
 			}
 		}
-		
+
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -191,44 +246,50 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		//System.out.println(e.getY());
 		//Click registration for upgrade boxes
 		clicked = false;
+		//red mushroom
 		if(e.getX() > x && e.getX() < 1000 && e.getY() > y1 && e.getY() < y1+50){
 			if(count>=40 || debug)
 			{
 				clickMulti+=50;
+				lastClicked = 0;
 				if(!debug)
 					count-=40;
 				playMusic(data1);
 			}
 		}
+		//fire flower
 		if(e.getX() > x && e.getX() < 1000 && e.getY() > y2 && e.getY() < y2+50){
 			if(count>=10000 || debug){
 				clickMulti+=500;
+				lastClicked = 1;
 				if(!debug)
 					count-=10000;
 				playMusic(data2);
 			}
 		}
-
+		//feather
 		if(e.getX() > x && e.getX() < 1000 && e.getY() > y3 && e.getY() < y3+50){
 			if(count>=100000 || debug)
 			{
 				clickMulti+=5000;
+				lastClicked = 2;
 				if(!debug)
 					count-=100000;
 				playMusic(data3);
 			}
 		}
-
+		//invincibility
 		if(e.getX() > x && e.getX() < 1000 && e.getY() > y4 && e.getY() < y4+50){
 			if(count>=1000000 || debug)
 			{
 				clickMulti+=50000;
+				lastClicked = 3;
 				if(!debug)
 					count-=1000000;
 				playMusic(data4);
 			}
 		}
-
+		//luigi
 		if(e.getX() > x && e.getX() < 1000 && e.getY() > y5 && e.getY() < y5+50){
 			if(count>=500000 || debug)
 			{
@@ -238,7 +299,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 				playMusic(data5);
 			}
 		}
-
+		//toad
 		if(e.getX() > x && e.getX() < 1000 && e.getY() > y6 && e.getY() < y6+50){
 			if(count>=5000000 || debug)
 			{
@@ -248,7 +309,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 				playMusic(data6);
 			}
 		}
-
+		//yoshi
 		if(e.getX() > x && e.getX() < 1000 && e.getY() > y7 && e.getY() < y7+50){
 			if(count>=50000000 || debug)
 			{
@@ -258,7 +319,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 				playMusic(data7);
 			}
 		}
-
+		//peach
 		if(e.getX() > x && e.getX() < 1000 && e.getY() > y8 && e.getY() < y8+50){
 			if(count>=500000000 || debug)
 			{
@@ -269,7 +330,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 			}
 		}
 
-		//Click registration for center clicker
+		//mario
 		if(e.getX() > 400 && e.getX() < 600 && e.getY() > 250 && e.getY() < 450){
 			count+=clickMulti+1;
 			playMusic(data9);
@@ -278,9 +339,17 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 
 	public void passive(long counter)
 	{
+		int c = 3;
 		//Counter for passive upgrades, displays 30 times per second
 		if(counter%2==0)
 			count+=clickPass/30.0;
+		if (counter%60 == 0 && (lastClicked == 3 || lastClicked == 4 || lastClicked == 5)) {
+			//Do thing to rotate picture
+			lastClicked = c;
+			c++;
+			if(c==5)
+				c = 3;
+		}
 	}
 
 	public boolean isPaused() {
