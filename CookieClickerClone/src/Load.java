@@ -1,12 +1,14 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.Locale;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -22,7 +24,6 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 	int clickMulti = 0;
 	int lastClicked = 0;
 	double count = 0;
-	double starCounter = 0;
 	long clickPass = 0;
 	boolean paused = false;
 	boolean clicked = false;
@@ -36,10 +37,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 	private BufferedImage fireJump;
 	private BufferedImage feather;
 	private BufferedImage featherJump;
-	private BufferedImage invinc1;
-	private BufferedImage invinc2;
-	private BufferedImage invinc3;
-	private BufferedImage invinc[] = {invinc1, invinc2, invinc3};
+	private BufferedImage[] invinc = new BufferedImage[3];
 	private BufferedImage invincJump;
 	private BufferedImage block;
 	private BufferedImage coin;
@@ -55,6 +53,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 	private static byte data10[];
 	private static AudioFormat form;
 	private Clip c;
+	private double starcounter = 0;
 
 	public Load() {
 		addMouseListener(this);
@@ -65,9 +64,9 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 			fireJump = ImageIO.read(Load.class.getResource("/firejump.PNG"));
 			feather = ImageIO.read(Load.class.getResource("/feather.PNG"));
 			featherJump = ImageIO.read(Load.class.getResource("/featherjump.PNG"));
-			invinc1 = ImageIO.read(Load.class.getResource("/invincibilitystar.PNG"));
-			invinc2 = ImageIO.read(Load.class.getResource("/invincibilitystar1.PNG"));
-			invinc3 = ImageIO.read(Load.class.getResource("/invincibilitystar2.PNG"));
+			invinc[0] = ImageIO.read(Load.class.getResource("/invincibilitystar.PNG"));
+			invinc[1] = ImageIO.read(Load.class.getResource("/invincibilitystar1.PNG"));
+			invinc[2] = ImageIO.read(Load.class.getResource("/invincibilitystar2.PNG"));
 			invincJump = ImageIO.read(Load.class.getResource("/invincibilitystarjump.PNG"));
 			block = ImageIO.read(Load.class.getResource("/coinblock.png"));
 			coin = ImageIO.read(Load.class.getResource("/coin.png"));
@@ -165,7 +164,7 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		g.drawRect(x, y6, l, 50);
 		g.drawRect(x, y7, l, 50);
 		g.drawRect(x, y8, l, 50);
-		g.drawString(Long.toString((long)count), 500, 50);
+		g.drawString(NumberFormat.getNumberInstance(Locale.US).format((long)count), 500, 50);
 		g.drawString("Red Mushroom +50 (40)", x+5, 120);
 		g.drawString("Fire Flower +500 (10,000)", x+5, 170);
 		g.drawString("Feather +5,000 (100,000)", x+5, 220);
@@ -175,16 +174,6 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		g.drawString("Yoshi +5,000 (50,000,000)", x+5, 420);
 		g.drawString("Princess Peach +50,000 (500,000,000)", x+5, 470);
 		g.drawImage(block, 400, 100, 100, 110, null);
-		
-		if(lastClicked == 3)
-		{
-		    if(starCounter >= 3)
-		    {
-		        starCounter = 0;
-		    }
-		    g.drawImage(invinc[(int)starCounter], 380, 240, 170, 230, null);
-		    starCounter += 1;
-		}
 
 		//mushroom/default
 		if(clicked == false && lastClicked == 0)
@@ -212,25 +201,40 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		}
 		//invincibility
 		if(clicked == false && lastClicked == 3)
-			g.drawImage(invinc1, 380, 240, 170, 230, null);
+		{
+			drawInvinc(g);
+		}
+
 		if (clicked == true && lastClicked == 3)
 		{
 			g.drawImage(invincJump, 390, 197, 140, 320, null);
 			g.drawImage(coin, 420, 15, 60, 80, null);
 		}
 		if(clicked == false && lastClicked == 4)
-			g.drawImage(invinc2, 380, 240, 170, 230, null);
+			drawInvinc(g);
 		if (clicked == true && lastClicked == 4)
 		{
 			g.drawImage(invincJump, 390, 197, 140, 320, null);
 			g.drawImage(coin, 420, 15, 60, 80, null);
 		}
 		if(clicked == false && lastClicked == 5)
-			g.drawImage(invinc1, 380, 240, 170, 230, null);
+			drawInvinc(g);
 		if (clicked == true && lastClicked == 5)
 		{
 			g.drawImage(invincJump, 390, 197, 140, 320, null);
 			g.drawImage(coin, 420, 15, 60, 80, null);
+		}
+	}
+
+	public void drawInvinc(Graphics2D g)
+	{
+		if(!isPaused()){
+			starcounter += 0.1;
+			if(starcounter>=3)
+			{
+				starcounter = 0;
+			}
+			g.drawImage(invinc[(int)starcounter], 380, 240, 150, 230, null);
 		}
 	}
 
@@ -239,14 +243,13 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 			try {
 				c = AudioSystem.getClip();
 			} catch (LineUnavailableException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			try {
 				c.open(form, data, 0, data.length);
 				c.start();
 			} catch (LineUnavailableException e1) {
-				// TODO Auto-generated catch block
+			
 				e1.printStackTrace();
 			}
 		}
@@ -355,6 +358,13 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 		//Counter for passive upgrades, displays 30 times per second
 		if(counter%2==0)
 			count+=clickPass/30.0;
+		if (counter%60 == 0 && (lastClicked == 3 || lastClicked == 4 || lastClicked == 5)) {
+			//Do thing to rotate picture
+			lastClicked = c;
+			c++;
+			if(c==5)
+				c = 3;
+		}
 	}
 
 	public boolean isPaused() {
@@ -429,5 +439,3 @@ public class Load extends JPanel implements MouseListener, KeyListener{
 	}
 
 }
-
-
